@@ -7,11 +7,8 @@ import TodoItem from "../TodoItem/TodoItem.view";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/configure.store";
 
-
-
 const App: FC = () => {
-
-  const todos = useSelector((state: RootState)=> state.todos.items)
+  const todos = useSelector((state: RootState) => state.todos.items);
 
   return (
     <Container>
@@ -25,7 +22,7 @@ const App: FC = () => {
                 return todo.show && <TodoItem key={todo.id} {...todo} />;
               })}
             </ul>
-            {/* <Footer /> */}
+            <Footer />
           </>
         )}
       </ListBox>
@@ -33,3 +30,6 @@ const App: FC = () => {
   );
 };
 export default App;
+// export default () => {
+//   return <Container><h1>hello</h1></Container>;
+// };

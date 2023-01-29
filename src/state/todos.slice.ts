@@ -15,20 +15,59 @@ const todosSlice = createSlice({
   name: "todos",
   initialState,
   reducers: {
-    addTodo: (state,action:PayloadAction<string>)=> {
-        state.items.push({
-            id: Math.random().toString(36).slice(2,7), 
-            title: action.payload,
-            show: true,
-            completed: false
-        })   
-    }
+    addTodo: (state, action: PayloadAction<string>) => {
+      state.items.push({
+        id: Math.random().toString(36).slice(2, 7),
+        title: action.payload,
+        show: true,
+        completed: false,
+      });
+    },
+    toggle: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      state.items.forEach((todo: ITodo) => {
+        if (todo.id === id) todo.completed = !todo.completed;
+      });
+    },
+    remove: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      const index = state.items.findIndex((todo: ITodo) => todo.id === id);
+      state.items.splice(index, 1);
+    },
+    removeCompleted: (state) => {
+      state.items = state.items.filter(
+        (todo: ITodo) => todo.completed === false
+      );
+    },
+    filterTodos: (state, action: PayloadAction<VisabilityFilter>) => {
+      const visFilter = action.payload;
+      state.currentFilter = visFilter;
+      state.items.forEach((todo: ITodo) => {
+        switch (visFilter) {
+          case VisabilityFilter.All:
+            todo.show = true;
+            break;
+          case VisabilityFilter.Active:
+            todo.show = todo.completed === false;
+            break;
+          case VisabilityFilter.Completed:
+            todo.show = todo.completed === true;
+            break;
+        }
+      });
+    },
   },
 });
 
 export default todosSlice.reducer;
 
-export const {addTodo} = todosSlice.actions;
+export const { 
+  addTodo, 
+  toggle, 
+  remove, 
+  removeCompleted, 
+  filterTodos 
+} = todosSlice.actions;
 
 // export const fetchRandomPerson = () => async (dispatch) => {
 //   try {
