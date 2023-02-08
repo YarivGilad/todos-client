@@ -15,6 +15,9 @@ const todosSlice = createSlice({
   name: "todos",
   initialState,
   reducers: {
+    initTodos: (state, action: PayloadAction<ITodo[]>)=> {
+      state.items = action.payload;
+    },
     addTodo: (state, action: PayloadAction<string>) => {
       state.items.push({
         id: Math.random().toString(36).slice(2, 7),
@@ -61,7 +64,8 @@ const todosSlice = createSlice({
 
 export default todosSlice.reducer;
 
-export const { 
+export const {
+  initTodos, 
   addTodo, 
   toggle, 
   remove, 

@@ -1,14 +1,26 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 
 import { Container, ListBox } from "./App.styles";
 import Footer from "../Footer/Footer.view";
 import EntryForm from "../EntryForm/EntryForm.view";
 import TodoItem from "../TodoItem/TodoItem.view";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../state/configure.store";
+import { getAllTasks } from "../../network/todos.api";
+import { initTodos } from "../../state/todos.slice";
+import { ITodo } from "../../types/todos.types";
 
 const App: FC = () => {
   const todos = useSelector((state: RootState) => state.todos.items);
+  const dispatch = useDispatch();
+
+  useEffect(()=> {
+     async function getInitialData(){
+       const initialTasks = await getAllTasks();
+       dispatch( initTodos(initialTasks));
+     }
+     getInitialData()
+  },[])
 
   return (
     <Container>
